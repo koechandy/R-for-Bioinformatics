@@ -1,0 +1,18 @@
+#!/usr/bin/env Rscript
+if (!require(formatR)) {
+    if (!interactive()) {
+         r <- getOption("repos");
+         r["CRAN"] <- "https://lib.ugent.be/CRAN/" 
+         options(repos=r) 
+    }
+    install.packages("formatR")
+    library(formatR)
+}
+
+args = commandArgs(trailingOnly = TRUE)
+
+if (length(args) != 1 || !file.exists(args[1])) {
+    cat("Usage: format.R filename.R\n")
+} else {
+    formatR::tidy_file(args[1])
+}

@@ -1,0 +1,83 @@
+#' @title read sequences from a fasta file
+#'
+#' @description
+#'
+#' @param infile input filename of a standard
+#' fasta file
+#' ...
+#' @export
+read.fasta <- function (filename,n=-1,id='')  {
+        fasta=list()
+        fin = file(filename,'r')
+        i=0
+        while(length((line=readLines(fin,n=1L)))>0)  {
+          if (grepl('^>',line)) {
+                  i=i+1
+                if (n != - 1 & i > n) {
+                        break
+                }
+                  cid = gsub('^>([^ ]+).+','\\1',line)
+                  
+                  if(id !='' & cid == id)
+                  {
+                         fasta[[cid]]=''
+                  }
+                  else if (id=='') {
+                  
+                         fasta[[cid]]='' 
+                         }
+                  else if (id != '' & cid != id & length(names(fasta)) > 0) {
+					  break
+				  }
+                
+          } else if (grepl ('^[A-Za-z]',line)) {
+                  seq=gsub('[^A-Za-z]','',line)
+                  fasta[[cid]]=paste(fasta[[cid]],seq,sep='')
+                   
+                }
+                
+        }
+        
+        close(fin)
+        class(fasta)="FastaUtils"
+        return(fasta)
+}
+
+print.FastaUtils <- function (x) {
+        for (nm in names (x)) {
+                cat(paste(nm,"\t",nchar(x[[nm]]),"\n",sep=''))
+        }
+}
+
+#creating the data frames with elements ( coloumns id and length)
+summary.FastaUtils <- function (x) {
+        df=data.frame(id=names(x),length=rep(0,length(names(x))))
+        #TODO: create a data frame with coloumns id and length and return it
+          i=1
+        for (n in names(x)) {
+            df[i,'length']= nchar(x[n])
+            i=i+1
+            
+            
+        }
+        return(df)
+        
+}
+#fu=read.fasta(commandArgs(trailingOnly=TRUE)[1],n=5)
+Main <- function () {
+	args=commandArgs(trailingOnly=TRUE)
+	if (length(args) == 1) {
+		fu=read.fasta(args[1])
+	} else if (length(args) == 2 & grepl('^[0-9]+$',args[2])) {
+		fu=read.fasta(args[1],n=as.integer(args[2]))
+	} else if (length(args) == 2) {
+		fu=read.fasta(args[1],id=args[2])
+	} else {
+		print("Usage ...")
+		q()
+	}
+	print(fu)
+}
+if (sys.nframe() == 0 & !interactive()) {
+	Main()
+}

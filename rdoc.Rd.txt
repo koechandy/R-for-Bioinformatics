@@ -1,0 +1,44 @@
+\name{fen.new}
+\alias{fen.new}
+\alias{plot.fen}
+
+\title{
+    Create a fen Object from the given text string or file
+}
+\description{
+    Create a fen object from the given text string or file and plot its 
+    representation as a chessboard.
+}
+\usage{
+    fen.new(fenstr)
+    \method{plot}{fen}(x, cols, \dots)
+}
+\arguments{
+  \item{fenstr}{
+    character string with a fen position
+  }
+}
+\details{
+    Some more details ...
+}
+\value{
+    return a object of class fen
+}
+\author{
+    Detlef Groth, University of Potsdam
+}
+\note{
+    further notes ...
+}
+
+\seealso{
+    See also \code{\link{add}}
+}
+\examples{
+ % the immortal game
+ fen=fen.new('r1bk3r/p2pBpNp/n4n2/1p1NP2P/6P1/3P4/P1P1K3/q5b1')
+ class(fen)
+  plot(fen)
+}
+
+\keyword{ chess } % use one of  RShowDoc("KEYWORDS")
